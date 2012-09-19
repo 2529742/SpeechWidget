@@ -14,6 +14,7 @@
 		<!-- jQuery -->
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js"></script>
+		<link rel="stylesheet" type="text/css" href="lib/jquery-ui.css" media="screen"/>
 		
 		<!-- libs -->
 		<script type="text/javascript" src="lib/underscore.js"></script>	
@@ -39,15 +40,17 @@
 		<link rel="stylesheet" type="text/css" href="./demo.css" />
     </head>
     <body>
-		<div>
+		<div id="wrapper">
 			<h1>VIE Widget - SpeechWidget</h1>
-			 <input x-webkit-speech/>
 			<article>
 				<h2 class="title">The Beatles</h2>
 				<section>
 				The Beatles were an English rock band formed in Liverpool in 1960, and one of the most commercially successful and critically acclaimed acts in the history of popular music. The group's best-known lineup consisted of <span about="http://dbpedia.org/resource/John_Lennon" typeof="Person"> John Lennon </span> (rhythm guitar, vocals),<span about="http://dbpedia.org/resource/Paul_McCartney" typeof="Person"> Paul McCartney </span> (bass guitar, vocals),<span about="http://dbpedia.org/resource/George_Harrison" typeof="Person"> George Harrison </span>(lead guitar, vocals) and <span about="http://dbpedia.org/resource/Ringo_Starr" typeof="Person"> Ringo Starr </span>(drums, vocals). Rooted in skiffle and 1950s rock and roll, the group later worked in many genres ranging from pop ballad s to psychedelic rock, often incorporating classical and other elements in innovative ways. Their enormous popularity first emerged as "Beatlemania"; as their songwriting grew in sophistication by the late 1960s, they came to be perceived by many fans and cultural observers as an embodiment of the ideals shared by the era's sociocultural revolutions.
 				</section>
-				</br>
+				<br/>
+				<div id="photos">
+					<img id="sample_img" src="http://upload.wikimedia.org/wikipedia/commons/thumb/d/df/The_Fabs.JPG/600px-The_Fabs.JPG"/>
+				</div>
 			</article>	
 		</div>
     </body>

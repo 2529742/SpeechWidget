@@ -1,7 +1,12 @@
 (function($, undefined) {
     $.widget('view.vieSpeechWidget', {
 		 _create: function () {
-		 
+			var dialog = $('<div id="speechWidgetDialog">')
+			.append('<input x-webkit-speech/>')
+			.dialog({
+				title: 'Start annotation'
+			});
+			
 		 },
 		 
 		 _init: function(){
@@ -165,9 +170,11 @@
 			});
 		},		
 		
+		result: undefined,
+		
 		options: {
 			vie: undefined,
-			entityHandler: undefined,
+			entityHandler: function(e,ui){},
 			speechServer: "http://mary.dfki.de:59125/",
 			options: {}
 		}
