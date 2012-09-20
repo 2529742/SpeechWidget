@@ -1,8 +1,18 @@
 (function($, undefined) {
     $.widget('view.vieSpeechWidget', {
 		 _create: function () {
+			var self = this;
+			var googleVoice = $('<input>');
+			googleVoice[0].onwebkitspeechchange = function(){
+				var val = event.target.value;
+				//use the js-chartparser function on the input value (and transform the input value to lower case)
+				var results = runParser(val.toLowerCase().split(/\s+/));
+				//call the dialogue manager with the results of the js-chartparser and the original value of the input
+				self.dialogueManager(results, val);
+			};
+			googleVoice.attr('x-webkit-speech','');
 			var dialog = $('<div id="speechWidgetDialog">')
-			.append('<input x-webkit-speech/>')
+			.append(googleVoice)
 			.dialog({
 				title: 'Start annotation'
 			});
@@ -27,20 +37,14 @@
 			if (parseInt(results[0]) == 0) {
 					//utter the spoken output for unparseable input
 					speechStatus = 'unparseable';
-					speakOutput(val, speechStatus);
+					self.speakOutput(val, speechStatus);
 			}
 			//if input is accepted
 			if (parseInt(results[0]) >= 1) {
 				self.getAnnotation(results, function(ann, url) {
 					//if there is more than one annotation
 					if (ann.length > 1) {
-						checkboxAnnotations = ann;
-						checkboxURL = url;
-						useCheckbox(ann);
-					} else if (ann.length == 1) {
-						//if there is exactly one annotation
-						//annotate the image with this annotation
-						annotateImage(ann[0], url);
+						self.options.entityHandler();	
 					} else {
 						//if there is no annotation at all
 						//utter the spoken output for this type of error
@@ -102,9 +106,7 @@
 			//save the urls and annotations in arrays
 			var annos = []
 			var urls = []
-			//lock the screen and display the loading spinner
-			lockScreen('loader', '');
-
+			var vie = this.options.vie;
 			vie.find({
 				//find database entries (with stanbol) using the grammar result and the rdfs:label
 				term : grammarResults[1],
