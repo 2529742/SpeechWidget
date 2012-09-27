@@ -78,6 +78,19 @@ function stringRepr(obj) {
     return str + "}";
 }
 
+function treeString(tree) {
+	if (typeof(tree) == 'object' && tree.label) {
+		str = "(" + tree.label
+		if (tree.children) {
+			for (var i in tree.children) {
+				str += " " + treeString(tree.children[i])
+			}
+		}
+		return str + ")"
+	} else {
+		return stringRepr(tree)
+	}
+}
 
 //////////////////////////////////////////////////////////////////////
 // parse chart
@@ -119,15 +132,34 @@ function Chart(numberOfWords) {
     // return all parse trees for the given lhs, start, and end
     //  - start, end are optional; defaults to 0, numberOfWords
     this.treesForRule = function treesForRule(lhs, start, end) {
-        start = start || 0;
-        end = end || numberOfWords;
+        //start = start || 0;
+        //end = end || numberOfWords;
+		
         var trees = [];
-        var finalEdges = this.passives[start][lhs];
-        for (var i in finalEdges) {
-            if (finalEdges[i].end == end) {
-                trees.push(finalEdges[i].tree);
-            }
-        }
+        if(start && end){
+			var finalEdges = this.passives[start][lhs];
+			for (var i in finalEdges) {
+				if (finalEdges[i].end == end) {
+					trees.push(finalEdges[i].tree);
+				}
+			}
+		}
+		else{
+			if(start){
+				var finalEdges = this.passives[start][lhs];
+				for (var i in finalEdges) {
+					trees.push(finalEdges[i].tree);
+				}	
+			}
+			else{
+				for(var i = 0; i<= numberOfWords; i++){
+					var finalEdges = this.passives[i][lhs];
+					for (var j in finalEdges) {
+							trees.push(finalEdges[j].tree);
+					}
+				}
+			}
+		}
         return trees;
     }
     

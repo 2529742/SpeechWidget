@@ -5,8 +5,32 @@
 			var googleVoice = $('<input>');
 			googleVoice[0].onwebkitspeechchange = function(){
 				var val = event.target.value;
+				var words = val.toLowerCase().split(/\s+/);
 				//use the js-chartparser function on the input value (and transform the input value to lower case)
-				var results = runParser(val.toLowerCase().split(/\s+/));
+				var results = [];	
+				var parseChart = parse(words, grammar, grammar.$root);
+				var parseTrees;//=parseChart.treesForRule(grammar.$root);
+				
+				var toAnnotate = (parseChart.treesForRule('annotate')).length > 0;
+				if(toAnnotate){
+				
+				}
+				
+				if (parseTrees) { 
+					results.push(parseTrees.length + "");
+					for (var i in parseTrees) {
+						var tree = parseTrees[i];
+						if (tree.data) {
+							results.push(stringRepr(tree.data));
+							results.push(treeString(tree));
+						} else {
+							results.push(treeString(tree));
+						}
+					}
+				} else {
+					results.push("nothing found");
+				}
+				
 				//call the dialogue manager with the results of the js-chartparser and the original value of the input
 				self._dialogueManager(results, val);
 			};

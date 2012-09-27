@@ -12,11 +12,10 @@
 var grammar = new Grammar('utt');
 
 grammar.utt = [OneOf([
-                       [Ref('deictic'), Ref('ne'), Tag("out = rules.ne")],
-                       [Ref('test'), Tag("out = rules.test")],
+                       [Ref('annotate'),Ref('ent'),Tag("out = rules.ent")]
                        ])];
-                       
-grammar.deictic = [Optional([OneOf([
+
+grammar.annotate = [Optional([OneOf([
     ['this', 'is'],
     ['these', 'are'],
     ['here', 'is'],
@@ -27,7 +26,7 @@ grammar.deictic = [Optional([OneOf([
     ['tag','these','as'],
 ])])];
 
-grammar.ne = [OneOf([
+grammar.ent = [OneOf([
     ['the','beatles',Tag("out = 'The Beatles'")],
     ['beatles',Tag("out = 'The Beatles'")],
     ['john','lennon', Tag("out = 'John Lennon'")],
