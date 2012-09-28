@@ -9,11 +9,23 @@
 				//use the js-chartparser function on the input value (and transform the input value to lower case)
 				var results = [];	
 				var parseChart = parse(words, grammar, grammar.$root);
-				var parseTrees;//=parseChart.treesForRule(grammar.$root);
+				var parseTrees;
 				
 				var toAnnotate = (parseChart.treesForRule('annotate')).length > 0;
 				if(toAnnotate){
-				
+					parseTrees = parseChart.treesForRule('ent');
+					for (var i in parseTrees) {
+						var tree = parseTrees[i];
+						if (tree.data) {
+							results.push(stringRepr(tree.data));
+							results.push(treeString(tree));
+						} else {
+							results.push(treeString(tree));
+						}
+					}
+				}
+				else{
+					results.push("nothing found");
 				}
 				
 				if (parseTrees) { 

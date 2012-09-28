@@ -27,25 +27,16 @@ grammar.annotate = [Optional([OneOf([
 ])])];
 
 grammar.ent = [OneOf([
-    ['the','beatles',Tag("out = 'The Beatles'")],
-    ['beatles',Tag("out = 'The Beatles'")],
-    ['john','lennon', Tag("out = 'John Lennon'")],
-    ['lennon', Tag("out = 'John Lennon'")],
-    ['ringo','starr', Tag("out = 'Ringo Starr'")],
-    ['starr', Tag("out = 'Ringo Starr'")],
-    ['paul','mccartney', Tag("out = 'Paul McCartney'")],
-    ['mccartney', Tag("out = 'Paul McCartney'")],
-    ['george','harrison', Tag("out = 'George Harrison'")],
-    ['harrison', Tag("out = 'George Harrison'")],
-    ['stuart','sutcliffe', Tag("out = 'Stuart Sutcliffe'")],
-    ['sutcliffe', Tag("out = 'Stuart Sutcliffe'")],
-    ['pete','best', Tag("out = 'Pete Best'")],
-    ['best', Tag("out = 'Pete Best'")],
-    ['brian','epstein', Tag("out = 'Brian Epstein'")],
-    ['epstein', Tag("out = 'Brian Epstein'")],
-    ['george','martin', Tag("out = 'George Martin'")],
-    ['martin', Tag("out = 'George Martin'")],
-    
+    ['the','beatles',Tag("out = 'http://dbpedia.org/resource/The_Beatles'")],
+    ['beatles',Tag("out = 'http://dbpedia.org/resource/The_Beatles'")],
+    ['john','lennon', Tag("out = 'http://dbpedia.org/resource/John_Lennon'")],
+    ['lennon', Tag("out = 'http://dbpedia.org/resource/John_Lennon'")],
+    ['ringo','starr', Tag("out = 'http://dbpedia.org/resource/Ringo_Starr'")],
+    ['starr', Tag("out = 'http://dbpedia.org/resource/Ringo_Starr'")],
+    ['paul','mccartney', Tag("out = 'http://dbpedia.org/resource/Paul_McCartney'")],
+    ['mccartney', Tag("out = 'http://dbpedia.org/resource/Paul_McCartney'")],
+    ['george','harrison', Tag("out = 'http://dbpedia.org/resource/George_Harrison'")],
+    ['harrison', Tag("out = 'http://dbpedia.org/resource/George_Harrison'")]
 ])]
                  
 grammar.test = [OneOf([['test', Tag("out = 'Paris Hilton'")], ['pizza', Tag("out = 'Angela Merkel'")]])];
