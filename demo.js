@@ -13,12 +13,15 @@ $(function(){
 			}
 		});
 	});
+	
+	//A possible entity handler function, that renders a dialog with resulted entities listed, so user can choose, which entity use for the annotation
 	var annotateImage = function(entities,image){
 		var resultsBox = $('<ul id="speechWidgetDialogResultsBox">');
 		$(entities).each(function(){
 			resultsBox.append('<li><input type="radio" name="entity">' + this.getSubjectUri() + '</li>');
 		});
-
+		
+		//Render a list of resulted entities as a radiobox and append it to the new dialog window with OK and Cancel buttons
 		var radiobox = $('<div>')
 		.append(resultsBox)
 		.dialog({
@@ -33,7 +36,10 @@ $(function(){
 						.each(function(){
 							if(this.checked){
 								var url = this.nextSibling.data;
+								//annotate the image with the chosen entity
+								image.attr('about',url);
 								var a = $('<a href="' + url + '" target="_blank">');
+								//wrap the image into the link to DBPedia article
 								image.wrap(a);
 								$(dialog).dialog('close');
 							}
