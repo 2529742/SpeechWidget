@@ -14,21 +14,28 @@
 				var toAnnotate = (parseChart.treesForRule('annotate')).length > 0;
 				if(toAnnotate){
 					parseTrees = parseChart.treesForRule('ent');
-					for (var i in parseTrees) {
-						var tree = parseTrees[i];
-						if (tree.data) {
-							results.push(stringRepr(tree.data));
-							results.push(treeString(tree));
-						} else {
-							results.push(treeString(tree));
+					if(parseTrees.length > 0){
+						results.push(parseTrees.length + "");
+						for (var i in parseTrees) {
+							var tree = parseTrees[i];
+							if (tree.data) {
+								results.push(stringRepr(tree.data));
+								results.push(treeString(tree));
+							} else {
+								results.push(treeString(tree));
+							}
 						}
+					}
+					else{
+						results.push("1");
+						results.push(val);
 					}
 				}
 				else{
 					results.push("nothing found");
 				}
 				
-				if (parseTrees) { 
+				/* if (parseTrees) { 
 					results.push(parseTrees.length + "");
 					for (var i in parseTrees) {
 						var tree = parseTrees[i];
@@ -41,7 +48,7 @@
 					}
 				} else {
 					results.push("nothing found");
-				}
+				} */
 				
 				//call the dialogue manager with the results of the js-chartparser and the original value of the input
 				self._dialogueManager(results, val);
@@ -75,8 +82,8 @@
 			//if input is accepted
 			if (parseInt(results[0]) >= 1) {
 				self.getAnnotation(results, function(entities) {
-					//if there is more than one annotation
-					if (entities.length > 1) {
+					//if there is at least one annotation
+					if (entities.length > 0) {
 						self.result = entities;
 						self.options.entityHandler(entities);
 					} else {
@@ -141,29 +148,34 @@
 		
 		getAnnotation: function(grammarResults, callback) {
 			var vie = this.options.vie;
-			vie.find({
-				//find database entries (with stanbol) using the grammar result and the rdfs:label
-				term : grammarResults[1],
-				field : "rdfs:label",
-				properties : ["skos:prefLabel", "rdfs:label"] // these labels are going to be loaded with the result entities
-			}).using("stanbol").execute().done(function(entities) {
-					var URIs = [];
-					$(entities).each(function(){
-						URIs.push(this.getSubjectUri())
-					});
-					vie.load({entity:URIs}).using("dbpedia")
-					.execute()
-					.success(function(entities) {
-							callback(entities);
-							$('#speechWidgetDialog').dialog('close');
-							})
-					.fail(function(error) {
-						//on error
-					});
-			});
+			//if the result is a reference to existing entity
+			if(VIE.Util.isUri(grammarResults[1])){
+				var entities = vie.entities.get(grammarResults[1]);
+				entities = [entities];
+				callback(entities);
+				$('#speechWidgetDialog').dialog('close');
+			}
+			else{
+				var elem = $('<div>' + grammarResults[1] + '</div>')
+				vie.analyze({
+					element: elem
+				}).using("stanbol").execute().done(function(entities) {
+						var URIs = [];
+						$(entities).each(function(){
+							URIs.push(this.getSubjectUri())
+						});
+						vie.load({entity:URIs}).using("dbpedia")
+						.execute()
+						.success(function(entities) {
+								callback(entities);
+								$('#speechWidgetDialog').dialog('close');
+								})
+						.fail(function(error) {
+							//on error
+						});
+				});
+			}
 		},		
-		
-		result: undefined,
 		
 		options: {
 			vie: undefined,
