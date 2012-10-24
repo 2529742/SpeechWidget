@@ -49,6 +49,7 @@ $(function(){
 			.append(resultsBox)
 			.dialog({
 				title: 'Please choose the entity',
+				width: '500px',
 				buttons:[
 					{
 						text: "OK",
