@@ -28,7 +28,7 @@ $(function(){
 	});
 	
 	
-	//A possible entity handler function, that renders a dialog with resulted entities listed, so user can choose, which entity use for the annotation
+	//A possible entity handler function, that renders a dialog with resulted entities listed, so user can choose, which entity to use for the annotation
 	var annotateImage = function(entities,image){
 		if(entities.length == 1){
 			var url = entities[0].getSubjectUri();
@@ -49,7 +49,7 @@ $(function(){
 			.append(resultsBox)
 			.dialog({
 				title: 'Please choose the entity',
-				width: '500px',
+				width: '700px',
 				buttons:[
 					{
 						text: "OK",

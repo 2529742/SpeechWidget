@@ -2,7 +2,7 @@
     $.widget('view.vieSpeechWidget', {
 		 _create: function () {
 			var self = this;
-			var googleVoice = $('<input>');
+			var googleVoice = $('<input id="googleVoice">');
 			googleVoice[0].onwebkitspeechchange = function(){
 				var val = event.target.value;
 				var words = val.toLowerCase().split(/\s+/);
@@ -35,40 +35,28 @@
 					results.push("nothing found");
 				}
 				
-				/* if (parseTrees) { 
-					results.push(parseTrees.length + "");
-					for (var i in parseTrees) {
-						var tree = parseTrees[i];
-						if (tree.data) {
-							results.push(stringRepr(tree.data));
-							results.push(treeString(tree));
-						} else {
-							results.push(treeString(tree));
-						}
-					}
-				} else {
-					results.push("nothing found");
-				} */
-				
 				//call the dialogue manager with the results of the js-chartparser and the original value of the input
 				self._dialogueManager(results, val);
 			};
-
 			googleVoice.attr('x-webkit-speech','');
-			
 			var spokenOutput = $('<audio id="spokenOutput">');
-			
 			var dialog = $('<div id="speechWidgetDialog">')
 			.append(googleVoice)
 			.append(spokenOutput)
 			.dialog({
 				title: 'Start annotation'
-			});
-			
+			});	
 		 },
 		 
 		 _init: function(){
-						
+			var dialog;
+			if($('#speechWidgetDialog').length>0){
+				dialog = $('#speechWidgetDialog');
+				$(dialog).dialog('open');
+			}
+			else{
+				throw new Error('Failed to create Speech Dialog.');
+			}	
 		 },
 		 
 		_dialogueManager: function(results, val) {
