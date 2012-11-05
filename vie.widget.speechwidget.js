@@ -136,32 +136,41 @@
 		
 		getAnnotation: function(grammarResults, callback) {
 			var vie = this.options.vie;
+			var DBPediaServiceCall = function(URIs) {
+				vie.load({entity:URIs}).using("dbpedia")
+				.execute()
+				.success(function(entities) {
+						entities = ($.isArray(entities))? entities: [entities];
+						callback(entities);
+						$('#speechWidgetDialog').dialog('close');
+						})
+				.fail(function(error) {
+					//on error
+				});
+			}
 			//if the result is a reference to existing entity
 			if(VIE.Util.isUri(grammarResults[1])){
-				var entities = vie.entities.get(grammarResults[1]);
-				entities = [entities];
-				callback(entities);
-				$('#speechWidgetDialog').dialog('close');
+				var URI = grammarResults[1];
+				var entities = vie.entities.get(URI);
+				if(entities){
+					entities = ($.isArray(entities))? entities: [entities];
+					callback(entities);
+					$('#speechWidgetDialog').dialog('close');
+				}
+				else{
+					DBPediaServiceCall(URI);
+				}
 			}
 			else{
 				var elem = $('<div>' + grammarResults[1] + '</div>')
 				vie.analyze({
 					element: elem
 				}).using("stanbol").execute().done(function(entities) {
-						var URIs = [];
-						$(entities).each(function(){
-							URIs.push(this.getSubjectUri())
-						});
-						vie.load({entity:URIs}).using("dbpedia")
-						.execute()
-						.success(function(entities) {
-								callback(entities);
-								$('#speechWidgetDialog').dialog('close');
-								})
-						.fail(function(error) {
-							//on error
-						});
-				});
+					var URIs = [];
+					$(entities).each(function(){
+						URIs.push(this.getSubjectUri())
+					});
+					DBPediaServiceCall(URIs);});
 			}
 		},		
 		
