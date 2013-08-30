@@ -1,7 +1,11 @@
 SpeechWidget
 ============
 
-SpeechWidget - is a [VIE](http://viejs.org) widget. It allows to use speech input in web applications in order to query for entities. running demo
+SpeechWidget - is a [VIE](http://viejs.org) widget.
+
+It allows to use speech input in web applications in order to query for entities. 
+
+[running demo](http://2529742.github.io/SpeechWidget/)
 
 Example
 =======
@@ -40,9 +44,9 @@ Widget parameters:
 Data flow:
 ----------
 
-1. The speech input gets recognized by the Google Voice and is returned as a text string.
+**1.** The speech input gets recognized by the Google Voice and is returned as a text string.
 
-2. The text string is spitted into an array of words, that is passed to the Chart Parser. The Chart Parser applies Grammar to the text input.
+**2.** The text string is spitted into an array of words, that is passed to the Chart Parser. The Chart Parser applies Grammar to the text input.
 
 The Grammar consists of:
 
@@ -65,7 +69,7 @@ The developer can introduce his own specific rules:
         ['The most famous British group in the world',Tag("out = 'The Beatles'")]
     ])]
 
-* As a next step, we want to introduce context-based rules, which can be constructed automatically from the context, so we could address the existing VIE entities for the annotation. Such rules should tag the entity occurrences in the text with entity's URI, e.g.: We can extract the Person Entity "John Lennon" from the article:
+As a next step, we want to introduce context-based rules, which can be constructed automatically from the context, so we could address the existing VIE entities for the annotation. Such rules should tag the entity occurrences in the text with entity's URI, e.g.: We can extract the Person Entity "John Lennon" from the article:
 
     ..The group's best-known lineup consisted of John Lennon (rhythm guitar, vocals)..
 
@@ -77,7 +81,7 @@ and then tag the grammar with the entities's URI = http://dbpedia.org/resource/J
 
 The context-based rules haven't been implemented yet.
 
-3. The Chart Parser outputs a chart. Its passive edges contain indexes of words or groups of words, that have been covered by any rule from the Grammar, and the label of the applied rule.
+**3.** The Chart Parser outputs a chart. Its passive edges contain indexes of words or groups of words, that have been covered by any rule from the Grammar, and the label of the applied rule.
 
 For example the input:
 
@@ -91,4 +95,4 @@ Based on this information, we can extract:
 
 if YES then we return the corresponding entities if NO then we pass the whole text input (with changes applied by the specific developer's rules) to Stanbol.
 
-4. The text input gets processed with VIE Stanbol and DBPedia serviсes and the resulted entities then passed to the entityHandler function, which is specified by the developer.
+**4.** The text input gets processed with VIE Stanbol and DBPedia serviсes and the resulted entities then passed to the entityHandler function, which is specified by the developer.
