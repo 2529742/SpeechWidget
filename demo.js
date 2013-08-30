@@ -1,4 +1,4 @@
-$(function(){
+jQuery(document).ready(function(){
 	//Initialize and set up VIE instance
 	var myVIE = new VIE();
 	myVIE.use(new myVIE.StanbolService, 'stanbol');
@@ -15,15 +15,16 @@ $(function(){
 	.using('dbpedia')
 	.execute()
 	.done(function(){
-		//call SpeechWidget on a sample image click
-		$('#sample_img').click(function(){
-			var image = $(this);
-			image.vieSpeechWidget({
-				vie: myVIE,
-				entityHandler: function(entities){
-					annotateImage(entities,image);
-				}
-			});
+
+	});
+	//call SpeechWidget on a sample image click
+	jQuery('#sample_img').click(function(){
+		var image = jQuery(this);
+		image.vieSpeechWidget({
+			vie: myVIE,
+			entityHandler: function(entities){
+				annotateImage(entities,image);
+			}
 		});
 	});
 	
@@ -34,18 +35,18 @@ $(function(){
 			var url = entities[0].getSubjectUri();
 			//annotate the image
 			image.attr('about',url);
-			var a = $('<a href="' + url + '" target="_blank">');
+			var a = jQuery('<a href="' + url + '" target="_blank">');
 			//wrap the image into the link to DBPedia article
 			image.wrap(a);
 		}
 		else{
-			var resultsBox = $('<ul id="speechWidgetDialogResultsBox">');
-			$(entities).each(function(){
+			var resultsBox = jQuery('<ul id="speechWidgetDialogResultsBox">');
+			jQuery(entities).each(function(){
 				resultsBox.append('<li><input type="radio" name="entity">' + this.getSubjectUri() + '</li>');
 			});
 			
 			//Render a list of resulted entities as a radiobox and append it to the new dialog window with OK and Cancel buttons
-			var radiobox = $('<div>')
+			var radiobox = jQuery('<div>')
 			.append(resultsBox)
 			.dialog({
 				title: 'Please choose the entity',
@@ -55,17 +56,17 @@ $(function(){
 						text: "OK",
 						click: function(){
 							var dialog = this;
-							var radioGroup = $('[name="entity"]');
-							$(radioGroup)
+							var radioGroup = jQuery('[name="entity"]');
+							jQuery(radioGroup)
 							.each(function(){
 								if(this.checked){
 									var url = this.nextSibling.data;
 									//annotate the image with the chosen entity
 									image.attr('about',url);
-									var a = $('<a href="' + url + '" target="_blank">');
+									var a = jQuery('<a href="' + url + '" target="_blank">');
 									//wrap the image into the link to DBPedia article
 									image.wrap(a);
-									$(dialog).dialog('close');
+									jQuery(dialog).dialog('close');
 								}
 							});
 						}
@@ -73,7 +74,7 @@ $(function(){
 					{
 						text: "Cancel",
 						click: function(){
-							$(this).dialog('close');
+							jQuery(this).dialog('close');
 						}
 					}
 				]
